@@ -1,6 +1,8 @@
-# Django School
+# Exponential Quiz
+Online quiz app with exponential scoring. Built for a CCS-TIET event.  
 
-Credits to [SIBTC](https://github.com/sibtc/django-multiple-user-types-example/) for the base quiz layout and workings.
+
+Credits to [SIBTC](https://github.com/sibtc/django-multiple-user-types-example/) for the base quiz layout and mechanism.
 
 ## Running the Project Locally
 
