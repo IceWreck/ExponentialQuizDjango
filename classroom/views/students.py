@@ -93,34 +93,48 @@ def take_quiz(request, pk):
         form = TakeQuizForm(question=question, data=request.POST)
         if form.is_valid():
             with transaction.atomic():
-                # happens after every submission
+
+                # This execs after every answer submission.
+
                 student_answer = form.save(commit=False)
                 student_answer.student = student
-               
-
                 student_answer.save() 
 
-                print("Question ID is "+ str(question.id))
-                #print("Question's Answer is" + str(question.answer))
-                print("Student's Answer is " + str(student_answer.answer_id))
-                qa = Answer.objects.get(question=question.id, is_correct=True)
-                print("Correct answer is " + str(qa.id))
+                # Random Info Needed
+
+                #print("Question ID is "+ str(question.id))
+                #print("Student's Answer is " + str(student_answer.answer_id))
+                correct_answer = Answer.objects.get(question=question.id, is_correct=True)
+                #print("Correct answer is " + str(correct_answer.id))
+
+                # New Session var specifically for this quiz.
+                temp_score_name = 'temp_score_' + str(quiz.id)
+
+                # Create if doesn't exist
+                temp_score = request.session.get(temp_score_name, 0)
+                request.session[temp_score_name] = temp_score
+
+                # Handle scoring on basis of answer
+                if student_answer.answer_id == correct_answer.id:
+                    messages.warning(request, 'Correct') 
+                    print("Correct")
+                    request.session[temp_score_name] = temp_score + 1
+
+                    print("Score is: " + str(request.session[temp_score_name]))
+                else:
+                    messages.warning(request, 'Wrong') 
+                    print("Wrong")
+                    print("Score is: " + str(request.session[temp_score_name]))
 
                 # Number of correct answers till now
                 number_correct = student.quiz_answers.filter(answer__question__quiz=quiz, answer__is_correct=True).count()
                 print("Total Correct Till Now are:" + str(number_correct))
-                '''
-                if number_correct >= 1:
-                    print("Correct")
-                else:
-                    print("Incorrect")
-
-                '''
 
 
                 if student.get_unanswered_questions(quiz).exists():
                     return redirect('students:take_quiz', pk)
                 else:
+                    # If all questions have been answered, open the student interface.
                     correct_answers = student.quiz_answers.filter(answer__question__quiz=quiz, answer__is_correct=True).count()
                     
                     score = round((correct_answers / total_questions) * 100.0, 2)
