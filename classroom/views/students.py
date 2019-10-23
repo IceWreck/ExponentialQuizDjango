@@ -107,24 +107,46 @@ def take_quiz(request, pk):
                 correct_answer = Answer.objects.get(question=question.id, is_correct=True)
                 #print("Correct answer is " + str(correct_answer.id))
 
-                # New Session var specifically for this quiz.
+                # New Session var name unique to each quiz in case there are multiple
                 temp_score_name = 'temp_score_' + str(quiz.id)
+                next_exponent_name = 'next_exponent_' + str(quiz.id)
 
-                # Create if doesn't exist
-                temp_score = request.session.get(temp_score_name, 0)
+                # Create session if doesn't exist
+                
+                # Score Session 
+                temp_score = request.session.get(temp_score_name, 0) #default val 0
+                request.session[temp_score_name] = temp_score
+                # Exponent Session
+                next_exponent = request.session.get(next_exponent_name, 1)
                 request.session[temp_score_name] = temp_score
 
                 # Handle scoring on basis of answer
-                if student_answer.answer_id == correct_answer.id:
-                    messages.warning(request, 'Correct') 
-                    print("Correct")
-                    request.session[temp_score_name] = temp_score + 1
 
-                    print("Score is: " + str(request.session[temp_score_name]))
+                '''
+
+                Score system
+                * basically questions will appear one by one
+                * The participant will have the choice of either skipping the question or answering it
+                * If he answers it corectly he'll get 2 points
+                * If he answers another question correctly after that hell get 4 points
+                * And so on 
+                * If he skips a question, next questions points will start from zero'
+                * If he answers the question incorrectly 2 marks will be deducted
+                * If he answers another question incorrectly 4 marks will be deducted and so on
+
+                '''
+
+                if student_answer.answer_id == correct_answer.id:
+                    print("Correct")
+                    request.session[temp_score_name] = temp_score + 2**(next_exponent)
+                    request.session[next_exponent_name] = next_exponent + 1
+                    messages.warning(request, 'Correct. Score is: ' + str(request.session[temp_score_name]))
                 else:
-                    messages.warning(request, 'Wrong') 
-                    print("Wrong")
-                    print("Score is: " + str(request.session[temp_score_name]))
+                    # Give -ve marking
+                    request.session[temp_score_name] = temp_score - 2
+                    # Set exponent back to 1 so next point gives them 0
+                    request.session[next_exponent_name] = 1
+                    messages.warning(request, 'Wrong. Score is: ' + str(request.session[temp_score_name]))
 
                 # Number of correct answers till now
                 number_correct = student.quiz_answers.filter(answer__question__quiz=quiz, answer__is_correct=True).count()
