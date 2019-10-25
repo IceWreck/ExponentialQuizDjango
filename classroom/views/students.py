@@ -140,13 +140,13 @@ def take_quiz(request, pk):
                     print("Correct")
                     request.session[temp_score_name] = temp_score + 2**(next_exponent)
                     request.session[next_exponent_name] = next_exponent + 1
-                    messages.warning(request, 'Correct. Score is: ' + str(request.session[temp_score_name]))
+                    messages.success(request, 'Correct. Score is: ' + str(request.session[temp_score_name]))
                 else:
                     # Give -ve marking
                     request.session[temp_score_name] = temp_score - 2
                     # Set exponent back to 1 so next point gives them 0
                     request.session[next_exponent_name] = 1
-                    messages.warning(request, 'Wrong. Score is: ' + str(request.session[temp_score_name]))
+                    messages.error(request, 'Wrong. Score is: ' + str(request.session[temp_score_name]))
 
                 # Number of correct answers till now
                 number_correct = student.quiz_answers.filter(answer__question__quiz=quiz, answer__is_correct=True).count()

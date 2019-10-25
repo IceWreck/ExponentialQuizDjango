@@ -32,7 +32,7 @@
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+          <i class="fas fa-question-circle"></i>
         </div>
         <div class="sidebar-brand-text mx-3">CCS Quiz</div>
       </a>
@@ -147,7 +147,7 @@
           <!-- Page Heading -->
           <h1 class="h3 mb-4 text-gray-800">{% block heading %}{% endblock %}</h1>
 
-          <!-- Messages Alerts-->
+          <!-- Messages and Alerts-->
           {% for message in messages %}
             <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
               {{ message }}
@@ -156,6 +156,8 @@
               </button>
             </div>
           {% endfor %}
+
+          <!-- Main Content -->
           {% block content %}
           {% endblock %}
         </div>

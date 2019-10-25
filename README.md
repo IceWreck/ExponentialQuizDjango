@@ -32,4 +32,4 @@ The project will be available at **127.0.0.1:8000**.
 
 ## License
 
-The source code is released under the [MIT License](https://github.com/sibtc/django-multiple-user-types-example/blob/master/LICENSE).
+The source code is released under the [MIT License](https://github.com/IceWreck/ExponentialQuizDjango/blob/master/LICENSE).
