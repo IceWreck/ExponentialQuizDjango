@@ -59,6 +59,6 @@
     </p>
     <button type="submit" class="btn btn-success">Save changes</button>
     <a href="{% url 'teachers:quiz_change' quiz.pk %}" class="btn btn-outline-secondary" role="button">Nevermind</a>
-    <a href="{% url 'teachers:question_delete' quiz.pk question.pk %}" class="btn btn-danger float-right">Delete</a>
+    <a href="{% url 'teachers:question_delete' quiz.pk question.pk %}" class="btn btn-danger float-right">Delete Quiz</a>
   </form>
 {% endblock %}
