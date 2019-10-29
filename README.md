@@ -1,6 +1,7 @@
 # Exponential Quiz
 Online quiz app with exponential scoring. Built for a CCS-TIET event.  
 
+![exponential-quiz](screenshots/abifog-exponential-quiz-4.png)
 
 Credits to [SIBTC](https://github.com/sibtc/django-multiple-user-types-example/) for the base quiz layout and mechanism.
 
@@ -29,6 +30,11 @@ python manage.py runserver
 
 The project will be available at **127.0.0.1:8000**.
 
+## Screenshots
+
+![exponential-quiz](screenshots/abifog-exponential-quiz-1.png)
+![exponential-quiz](screenshots/abifog-exponential-quiz-2.png)
+![exponential-quiz](screenshots/abifog-exponential-quiz-3.png)
 
 ## License
 
