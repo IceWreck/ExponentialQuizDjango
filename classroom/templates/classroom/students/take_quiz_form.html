@@ -7,7 +7,7 @@
     <div class="progress-bar" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%"></div>
   </div>
   <h2 class="mb-3">{{ quiz.name }}</h2>
-  <p class="lead">{{ question.text }}</p>
+  <p class="lead">{{ question.text | safe }}</p>
   <form method="post" novalidate>
     {% csrf_token %}
     {{ form|crispy }}
