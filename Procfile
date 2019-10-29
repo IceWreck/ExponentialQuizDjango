@@ -1,1 +1,1 @@
-web: gunicorn myproject.wsgi
+web: gunicorn exponential_quiz.wsgi
