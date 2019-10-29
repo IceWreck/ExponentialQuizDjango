@@ -1,22 +1,39 @@
 # Exponential Quiz
-Online quiz app with exponential scoring. Built for a CCS-TIET event.  
+Online quiz app with exponential scoring. Built for a CCS-TIET event.
 
 ![exponential-quiz](screenshots/abifog-exponential-quiz-4.png)
 
-Credits to [SIBTC](https://github.com/sibtc/django-multiple-user-types-example/) for the base quiz layout and mechanism.
+## Features
 
-## Running the Project Locally
+* Standard Quiz Features
+* Exponential Scoring and negative marking
+* Know your score after each answer submission
+* User auth for both quiz makers and students
+* Images/Code/Text in questions.
+* Anti cheat
 
-First, clone the repository to your local machine:
-
+## Running Locally
 
 Install the requirements:
 
+In a python3virtualenv,
 ```bash
 pip install -r requirements.txt
 ```
 
-Create the database:
+In exponential_quiz/settings.py commment out these two lines
+```
+import django_heroku
+.
+.
+.
+.
+django_heroku.settings(locals())
+```
+
+
+
+Link to the database by setting the DATABASE_URL environment variable. Then run:
 
 ```bash
 python manage.py migrate
@@ -28,14 +45,20 @@ Finally, run the development server:
 python manage.py runserver
 ```
 
-The project will be available at **127.0.0.1:8000**.
+## Notes
+* The contents of one option of a question should be 'Skip' if you want a question to be skippable.
+* Basic html markup can be inserted into the questions for code, images, formatting, etc.
 
-## Screenshots
+## Other Screenshots
 
 ![exponential-quiz](screenshots/abifog-exponential-quiz-1.png)
 ![exponential-quiz](screenshots/abifog-exponential-quiz-2.png)
 ![exponential-quiz](screenshots/abifog-exponential-quiz-3.png)
 
-## License
 
+## Credits:
+* [SIBTC](https://github.com/sibtc/django-multiple-user-types-example/) for the base quiz layout and mechanism.
+* [StartBootstrap](https://startbootstrap.com/themes/sb-admin-2/) for the css template.
+
+## License
 The source code is released under the [MIT License](https://github.com/IceWreck/ExponentialQuizDjango/blob/master/LICENSE).
