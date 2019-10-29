@@ -109,7 +109,7 @@ def take_quiz(request, pk):
 
                 # New Session var name unique to each quiz in case there are multiple
                 temp_score_name = 'temp_score_' + str(quiz.id)
-                next_exponent_name = 'next_exponent_' + str(quiz.id)
+                score_factor_name = 'score_factor_' + str(quiz.id)
 
                 # Create session if doesn't exist
                 
@@ -117,7 +117,7 @@ def take_quiz(request, pk):
                 temp_score = request.session.get(temp_score_name, 0) #default val 0
                 request.session[temp_score_name] = temp_score
                 # Exponent Session
-                next_exponent = request.session.get(next_exponent_name, 1)
+                score_factor = request.session.get(score_factor_name, 1)
                 request.session[temp_score_name] = temp_score
 
                 # Handle scoring on basis of answer
@@ -138,15 +138,33 @@ def take_quiz(request, pk):
 
                 if student_answer.answer_id == correct_answer.id:
                     print("Correct")
-                    request.session[temp_score_name] = temp_score + 2**(next_exponent)
-                    request.session[next_exponent_name] = next_exponent + 1
-                    messages.success(request, 'Correct. Score is: ' + str(request.session[temp_score_name]))
+                    
+                    if score_factor >= 0:
+                        pass
+                    else:
+                        score_factor = 1
+                    
+                    # Add to Score
+                    request.session[temp_score_name] = temp_score + abs(score_factor * 2)
+                    messages.success(request, 'Correct. Points are: ' + str(request.session[temp_score_name]))
+                    # Change score factor for next question
+                    request.session[score_factor_name] = abs(score_factor * 2)
+
                 else:
-                    # Give -ve marking
-                    request.session[temp_score_name] = temp_score - 2
-                    # Set exponent back to 1 so next point gives them 0
-                    request.session[next_exponent_name] = 1
-                    messages.error(request, 'Wrong. Score is: ' + str(request.session[temp_score_name]))
+                    # Give -ve marking 
+
+                    if score_factor >= 0:
+                        # Decrease Score
+                        request.session[temp_score_name] = temp_score - 2
+                        # Set score factor to negative
+                        request.session[score_factor_name] = -2
+                    else:
+                        # Score factor is already -ve
+                        request.session[temp_score_name] = temp_score + (score_factor * 2)
+                        # Change score factor for the next question
+                        request.session[score_factor_name] = score_factor * 2
+
+                    messages.error(request, 'Wrong. Points are: ' + str(request.session[temp_score_name]))
 
                 # Number of correct answers till now
                 number_correct = student.quiz_answers.filter(answer__question__quiz=quiz, answer__is_correct=True).count()
@@ -159,12 +177,15 @@ def take_quiz(request, pk):
                     # If all questions have been answered, open the student interface.
                     correct_answers = student.quiz_answers.filter(answer__question__quiz=quiz, answer__is_correct=True).count()
                     
-                    score = round((correct_answers / total_questions) * 100.0, 2)
+                    # Percentage of Questions Right
+                    percentage_correct = round((correct_answers / total_questions) * 100.0, 2)
+                    # Exponential Scoring
+                    score = request.session[temp_score_name]
                     TakenQuiz.objects.create(student=student, quiz=quiz, score=score)
-                    if score < 50.0:
-                        messages.warning(request, 'Better luck next time! Your score for the quiz %s was %s.' % (quiz.name, score))
+                    if percentage_correct < 50.0:
+                        messages.warning(request, 'Better luck next time! Your score for the quiz %s was %s points. You got %s percent questions correct.' % (quiz.name, score, percentage_correct))
                     else:
-                        messages.success(request, 'Congratulations! You completed the quiz %s with success! You scored %s points.' % (quiz.name, score))
+                        messages.success(request, 'Congratulations! You completed the quiz %s with success! You scored %s points. You got %s percent questions correct.' % (quiz.name, score, percentage_correct))
                     return redirect('students:quiz_list')
     else:
         form = TakeQuizForm(question=question)
