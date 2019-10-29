@@ -126,14 +126,14 @@ def take_quiz(request, pk):
                 '''
 
                 Score system
-                * basically questions will appear one by one
-                * The participant will have the choice of either skipping the question or answering it
-                * If he answers it corectly he'll get 2 points
-                * If he answers another question correctly after that hell get 4 points
+                * Questions will appear one by one.
+                * The participant will have the choice of either skipping the question or answering it.
+                * If they answer it corectly they'll get 2^1 points.
+                * If they answer another question correctly after that theyll get 2^2 points.
                 * And so on 
-                * If he skips a question, next questions points will start from zero'
-                * If he answers the question incorrectly 2 marks will be deducted
-                * If he answers another question incorrectly 4 marks will be deducted and so on
+                * If they skip a question, next questions points will again start from 2^1.
+                * If they answer the question incorrectly 2 marks will be deducted.
+                * If they answer another question incorrectly 4 marks will be deducted and so on.
 
                 '''
                 if str(student_answer.answer) == 'Skip':
