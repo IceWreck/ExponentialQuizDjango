@@ -101,6 +101,7 @@ def take_quiz(request, pk):
                 student_answer.save() 
 
                 # Random Info Needed
+                print(student_answer.answer)
 
                 #print("Question ID is "+ str(question.id))
                 #print("Student's Answer is " + str(student_answer.answer_id))
@@ -135,8 +136,11 @@ def take_quiz(request, pk):
                 * If he answers another question incorrectly 4 marks will be deducted and so on
 
                 '''
-
-                if student_answer.answer_id == correct_answer.id:
+                if str(student_answer.answer) == 'Skip':
+                    # set score factor to default
+                    request.session[score_factor_name] = 1
+                    messages.success(request, 'Question Skipped. Points are: ' + str(request.session[temp_score_name]))
+                elif student_answer.answer_id == correct_answer.id:
                     print("Correct")
                     
                     if score_factor >= 0:
