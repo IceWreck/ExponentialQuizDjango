@@ -1,5 +1,4 @@
-gunicorn
-django-heroku
 Django
 django-crispy-forms
 pytz
+whitehouse

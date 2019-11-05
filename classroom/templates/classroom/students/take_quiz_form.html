@@ -1,5 +1,7 @@
+
 {% extends 'base.html' %}
 
+{% load static %}
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -13,4 +15,51 @@
     {{ form|crispy }}
     <button type="submit" class="btn btn-primary">Next →</button>
   </form>
+
+    <script src="{% static 'js/ifvisible.js' %}"></script>
+    <script type="text/javascript">
+        console.log("Scrpit is active");
+                //set the timer for user inactivity here (seconds)
+         ifvisible.setIdleDuration(30000);
+
+        ifvisible.idle(function(){
+            //alert('User is idle')
+            window.open("{% url 'cheatingbastard' %}", "_self");
+        });
+
+
+        ifvisible.wakeup(function(){
+        console.log('User is again active'); 
+
+
+        });
+
+        setInterval(function(){
+            var info = ifvisible.getIdleInfo();
+            // Give 3% margin to stabilaze user output
+            if(info.timeLeftPer < 3){
+                info.timeLeftPer = 0;
+                info.timeLeft = ifvisible.getIdleDuration();
+            }
+            console.log(parseInt(info.timeLeft / 1000))    //log the remaining time for inactivity
+            //console.log(info)
+        }, 100);
+        document.addEventListener("contextmenu", function(e){
+              console.log("Fuck you")
+              e.preventDefault();
+        }, false);
+    
+    </script>
+    <style>
+body{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+</style>
 {% endblock %}
+
+
