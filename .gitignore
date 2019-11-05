@@ -106,3 +106,8 @@ ENV/
 # IDEs
 .VSCode
 .idea
+
+bin
+lib
+lib64
+pyvenv.cfg
