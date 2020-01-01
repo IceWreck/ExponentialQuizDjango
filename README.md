@@ -10,7 +10,7 @@ Online quiz app with exponential scoring. Built for a CCS-TIET event.
 * Know your score after each answer submission
 * User auth for both quiz makers and students
 * Images/Code/Text in questions.
-* Anti cheat
+* Anti cheat (Note: The Anti Cheat features give false positives on Firefox so please use other browsers for the test or disable anti-cheat.)
 
 ## Score System
 
@@ -31,18 +31,7 @@ Install the requirements:
 In a python3virtualenv,
 ```bash
 pip install -r requirements.txt
-```
-
-In exponential_quiz/settings.py commment out these two lines
-```
-import django_heroku
-.
-.
-.
-.
-django_heroku.settings(locals())
-```
-
+``
 
 
 Link to the database by setting the DATABASE_URL environment variable. Then run:
@@ -57,7 +46,7 @@ Finally, run the development server:
 python manage.py runserver
 ```
 ## Other Deployment Methods
-I haven't built a dockerfile for this specific app but I think after connecting it to postgres you'll have to run the ```python manage.py migrate``` command once inside the container's shell. Same with heroku etc.
+I haven't built a dockerfile for this specific app but I think after connecting it to postgres you'll have to run the ```python manage.py migrate``` command once inside the container's shell. Same with heroku etc. I tested deployment on both heroku and apache and it works properly.
 
 ## Notes
 * The contents of one option of a question should be 'Skip' if you want a question to be skippable.
